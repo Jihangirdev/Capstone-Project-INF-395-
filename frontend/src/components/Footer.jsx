@@ -5,6 +5,7 @@ export default function Footer() {
     <footer className="mt-16 border-t border-white/10 bg-slate-950/70">
       <div className="mx-auto grid max-w-6xl gap-8 px-6 py-10 md:grid-cols-2">
         <div>
+          <div className="w-full flex flex-col items-center">
           <div className="flex items-center gap-2 text-white">
             <div className="rounded-2xl bg-sky-400/20 p-2 text-sky-300">
               <Rocket className="h-5 w-5" />
@@ -16,10 +17,12 @@ export default function Footer() {
             A simple web application built with React Vite on the frontend and
             Spring on the backend.
           </p>
+          </div>
         </div>
 
         <div>
           <h4 className="text-lg font-semibold text-white">Contacts</h4>
+          <div className="w-full flex flex-col items-center">
           <div className="mt-4 space-y-3 text-slate-300">
             <p className="flex items-center gap-3">
               <Mail className="h-4 w-4" />
@@ -33,6 +36,7 @@ export default function Footer() {
               <MapPin className="h-4 w-4" />
               Almaty, Kazakhstan
             </p>
+          </div>
           </div>
         </div>
       </div>

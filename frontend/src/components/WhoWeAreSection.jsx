@@ -21,16 +21,18 @@ export default function WhoWeAreSection() {
 
   return (
     <section id="who-we-are" className="mx-auto max-w-6xl px-6 py-16">
-      <div className="mb-10 text-center">
-        <p className="text-sm uppercase tracking-[0.3em] text-sky-300">
-          About us
-        </p>
-        <h2 className="mt-3 text-4xl font-bold text-white">Who We Are</h2>
-        <p className="mx-auto mt-4 max-w-2xl text-slate-300">
-          StartupHub is made for people who want to explore startup ideas in a
-          simple and modern way.
-        </p>
-      </div>
+      <div className="w-full flex flex-col items-center">
+        <div className="mb-10 text-center">
+          <p className="text-sm uppercase tracking-[0.3em] text-sky-300">
+            About us
+          </p>
+          <h2 className="mt-3 text-4xl font-bold text-white">Who We Are</h2>
+          <p className="mx-auto mt-4 max-w-2xl text-slate-300">
+            StartupHub is made for people who want to explore startup ideas in a
+            simple and modern way.
+          </p>
+        </div>
+      </div>  
 
       <div className="grid gap-6 md:grid-cols-3">
         {cards.map((item) => (
