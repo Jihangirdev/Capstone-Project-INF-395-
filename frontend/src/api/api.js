@@ -11,8 +11,6 @@ function authHeaders() {
   };
 }
 
-// ─── AUTH ────────────────────────────────────────────────
-
 export async function login(email, password) {
   const res = await fetch(`${BASE_URL}/auth/login`, {
     method: 'POST',
@@ -22,7 +20,7 @@ export async function login(email, password) {
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'Login failed');
   localStorage.setItem('token', data.token);
-  localStorage.setItem('user', JSON.stringify({ email: data.email, role: data.role }));
+  localStorage.setItem('user', JSON.stringify({ id: data.id, email: data.email, role: data.role }));
   return data;
 }
 
@@ -35,7 +33,7 @@ export async function register(email, password, name, role) {
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'Registration failed');
   localStorage.setItem('token', data.token);
-  localStorage.setItem('user', JSON.stringify({ email: data.email, role: data.role }));
+  localStorage.setItem('user', JSON.stringify({ id: data.id, email: data.email, role: data.role }));
   return data;
 }
 
@@ -48,8 +46,6 @@ export function getCurrentUser() {
   const user = localStorage.getItem('user');
   return user ? JSON.parse(user) : null;
 }
-
-// ─── USER ────────────────────────────────────────────────
 
 export async function getMe() {
   const res = await fetch(`${BASE_URL}/users/me`, { headers: authHeaders() });
@@ -75,8 +71,6 @@ export async function getUserStartups(userId) {
   if (!res.ok) throw new Error(data.message);
   return data;
 }
-
-// ─── STARTUPS ────────────────────────────────────────────
 
 export async function getStartups({ category, stage, search, page = 0, size = 10 } = {}) {
   const params = new URLSearchParams();
@@ -110,7 +104,24 @@ export async function createStartup(startup) {
   return data;
 }
 
-// ─── APPLICATIONS ────────────────────────────────────────
+export async function updateStartup(id, data) {
+  const res = await fetch(`${BASE_URL}/startups/${id}`, {
+    method: 'PUT',
+    headers: authHeaders(),
+    body: JSON.stringify(data)
+  });
+  const json = await res.json();
+  if (!res.ok) throw new Error(json.message);
+  return json;
+}
+
+export async function deleteStartup(id) {
+  const res = await fetch(`${BASE_URL}/startups/${id}`, {
+    method: 'DELETE',
+    headers: authHeaders()
+  });
+  if (!res.ok) throw new Error('Error deleting startup');
+}
 
 export async function applyToStartup(startupId, type, message) {
   const res = await fetch(`${BASE_URL}/startups/${startupId}/apply`, {
@@ -148,7 +159,12 @@ export async function updateApplicationStatus(applicationId, status) {
   return data;
 }
 
-// ─── FAVORITES ───────────────────────────────────────────
+export async function getReceivedApplications() {
+  const res = await fetch(`${BASE_URL}/applications/received`, { headers: authHeaders() });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message);
+  return data;
+}
 
 export async function toggleFavorite(startupId) {
   const res = await fetch(`${BASE_URL}/favorites/${startupId}`, {

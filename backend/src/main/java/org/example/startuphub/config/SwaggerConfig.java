@@ -16,7 +16,7 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("StartUpHub API")
-                        .description("API для платформы стартапов")
+                        .description("API for startup website")
                         .version("1.0"))
                 .addSecurityItem(new SecurityRequirement().addList("Bearer Token"))
                 .components(new Components()

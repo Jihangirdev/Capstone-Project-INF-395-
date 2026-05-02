@@ -13,7 +13,7 @@ public class UserService {
 
     public UserResponse getById(Long id) {
         return toResponse(userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Пользователь не найден")));
+                .orElseThrow(() -> new RuntimeException("User not found")));
     }
 
     public UserResponse updateProfile(UpdateProfileRequest dto, User currentUser) {

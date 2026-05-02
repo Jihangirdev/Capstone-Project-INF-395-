@@ -19,7 +19,6 @@ public class ApplicationController {
 
     private final ApplicationService applicationService;
 
-    // Подать заявку на стартап
     @PostMapping("/startups/{startupId}/apply")
     public ResponseEntity<ApplicationResponse> apply(
             @PathVariable Long startupId,
@@ -29,7 +28,13 @@ public class ApplicationController {
         return ResponseEntity.ok(applicationService.apply(startupId, dto, currentUser));
     }
 
-    // Список заявок на мой стартап (только owner)
+    @GetMapping("/applications/received")
+    public ResponseEntity<List<ApplicationResponse>> getReceived(
+            @AuthenticationPrincipal User currentUser
+    ) {
+        return ResponseEntity.ok(applicationService.getReceivedApplications(currentUser));
+    }
+
     @GetMapping("/startups/{startupId}/applications")
     public ResponseEntity<List<ApplicationResponse>> getByStartup(
             @PathVariable Long startupId,
@@ -38,7 +43,6 @@ public class ApplicationController {
         return ResponseEntity.ok(applicationService.getByStartup(startupId, currentUser));
     }
 
-    // Мои заявки
     @GetMapping("/applications/my")
     public ResponseEntity<List<ApplicationResponse>> getMyApplications(
             @AuthenticationPrincipal User currentUser
@@ -46,7 +50,6 @@ public class ApplicationController {
         return ResponseEntity.ok(applicationService.getMyApplications(currentUser));
     }
 
-    // Принять / отклонить заявку
     @PutMapping("/applications/{applicationId}")
     public ResponseEntity<ApplicationResponse> updateStatus(
             @PathVariable Long applicationId,

@@ -16,7 +16,6 @@ public class FavoriteController {
 
     private final FavoriteService favoriteService;
 
-    // Добавить / убрать из избранного (toggle)
     @PostMapping("/{startupId}")
     public ResponseEntity<String> toggle(
             @PathVariable Long startupId,
@@ -25,7 +24,6 @@ public class FavoriteController {
         return ResponseEntity.ok(favoriteService.toggle(startupId, currentUser));
     }
 
-    // Мои избранные стартапы
     @GetMapping
     public ResponseEntity<List<StartupResponse>> getMyFavorites(
             @AuthenticationPrincipal User currentUser

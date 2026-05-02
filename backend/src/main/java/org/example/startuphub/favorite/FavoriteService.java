@@ -22,15 +22,15 @@ public class FavoriteService {
         if (favoriteRepository.existsByUser_IdAndStartup_Id(currentUser.getId(), startupId)) {
             favoriteRepository.findByUser_IdAndStartup_Id(currentUser.getId(), startupId)
                     .ifPresent(favoriteRepository::delete);
-            return "Удалено из избранного";
+            return "Removed from favorites";
         } else {
             Startup startup = startupRepository.findById(startupId)
-                    .orElseThrow(() -> new RuntimeException("Стартап не найден"));
+                    .orElseThrow(() -> new RuntimeException("Startup not found "));
             Favorite favorite = new Favorite();
             favorite.setUser(currentUser);
             favorite.setStartup(startup);
             favoriteRepository.save(favorite);
-            return "Добавлено в избранное";
+            return "Added to favorite";
         }
     }
 

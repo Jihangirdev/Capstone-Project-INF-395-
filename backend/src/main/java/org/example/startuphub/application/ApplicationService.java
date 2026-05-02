@@ -18,16 +18,21 @@ public class ApplicationService {
     private final ApplicationRepository applicationRepository;
     private final StartupRepository startupRepository;
 
+    public List<ApplicationResponse> getReceivedApplications(User currentUser) {
+        return applicationRepository.findByStartupOwnerId(currentUser.getId())
+                .stream().map(this::toResponse).toList();
+    }
+
     public ApplicationResponse apply(Long startupId, ApplicationRequest dto, User currentUser) {
         Startup startup = startupRepository.findById(startupId)
-                .orElseThrow(() -> new RuntimeException("Стартап не найден"));
+                .orElseThrow(() -> new RuntimeException("Startup not found!"));
 
         if (startup.getOwner().getId().equals(currentUser.getId())) {
-            throw new RuntimeException("Нельзя подать заявку на свой стартап");
+            throw new RuntimeException("You cannot apply oh your own startup");
         }
 
         if (applicationRepository.existsByUser_IdAndStartup_Id(currentUser.getId(), startupId)) {
-            throw new RuntimeException("Вы уже подали заявку на этот стартап");
+            throw new RuntimeException("You already apply to this startup");
         }
 
         Application application = new Application();
@@ -41,10 +46,10 @@ public class ApplicationService {
 
     public List<ApplicationResponse> getByStartup(Long startupId, User currentUser) {
         Startup startup = startupRepository.findById(startupId)
-                .orElseThrow(() -> new RuntimeException("Стартап не найден"));
+                .orElseThrow(() -> new RuntimeException("Startup not found"));
 
         if (!startup.getOwner().getId().equals(currentUser.getId())) {
-            throw new RuntimeException("Нет доступа");
+            throw new RuntimeException("No Access");
         }
 
         return applicationRepository.findByStartup_Id(startupId)
@@ -58,10 +63,10 @@ public class ApplicationService {
 
     public ApplicationResponse updateStatus(Long applicationId, ApplicationStatusRequest dto, User currentUser) {
         Application application = applicationRepository.findById(applicationId)
-                .orElseThrow(() -> new RuntimeException("Заявка не найдена"));
+                .orElseThrow(() -> new RuntimeException("Application not found"));
 
         if (!application.getStartup().getOwner().getId().equals(currentUser.getId())) {
-            throw new RuntimeException("Нет доступа");
+            throw new RuntimeException("No Access");
         }
 
         application.setStatus(dto.getStatus());

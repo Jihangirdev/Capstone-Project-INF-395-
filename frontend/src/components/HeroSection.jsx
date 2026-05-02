@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 import { LogIn, Rocket, TrendingUp, Users } from "lucide-react";
 import { motion } from "framer-motion";
+import { getCurrentUser } from "../api/api";
 
 export default function HeroSection() {
+  const user = getCurrentUser();
+
   return (
     <section className="relative overflow-hidden px-6 py-24">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(56,189,248,0.18),transparent_35%),radial-gradient(circle_at_bottom_left,rgba(168,85,247,0.18),transparent_35%)]" />
@@ -27,13 +30,23 @@ export default function HeroSection() {
           </p>
 
           <div className="mt-8 flex flex-wrap gap-4">
-            <Link
-              to="/auth"
-              className="inline-flex items-center gap-2 rounded-2xl bg-sky-400 px-6 py-3 font-semibold text-slate-950 transition hover:scale-[1.03]"
-            >
-              <LogIn className="h-4 w-4" />
-              Authorization
-            </Link>
+            {!user ? (
+              <Link
+                to="/auth"
+                className="inline-flex items-center gap-2 rounded-2xl bg-sky-400 px-6 py-3 font-semibold text-slate-950 transition hover:scale-[1.03]"
+              >
+                <LogIn className="h-4 w-4" />
+                Authorization
+              </Link>
+            ) : (
+              <Link
+                to="/profile"
+                className="inline-flex items-center gap-2 rounded-2xl bg-sky-400 px-6 py-3 font-semibold text-slate-950 transition hover:scale-[1.03]"
+              >
+                <LogIn className="h-4 w-4" />
+                My Profile
+              </Link>
+            )}
 
             <Link
               to="/startups"

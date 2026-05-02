@@ -13,26 +13,23 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // Ошибки валидации (@NotBlank, @Email и т.д.)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidation(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getFieldErrors()
                 .forEach(e -> errors.put(e.getField(), e.getDefaultMessage()));
 
-        return buildResponse(HttpStatus.BAD_REQUEST, "Ошибка валидации", errors);
+        return buildResponse(HttpStatus.BAD_REQUEST, "Validation error", errors);
     }
 
-    // Бизнес-ошибки (RuntimeException из сервисов)
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Map<String, Object>> handleRuntime(RuntimeException ex) {
         return buildResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), null);
     }
 
-    // Всё остальное
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGeneral(Exception ex) {
-        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Внутренняя ошибка сервера", null);
+        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error", null);
     }
 
     private ResponseEntity<Map<String, Object>> buildResponse(HttpStatus status, String message, Object details) {

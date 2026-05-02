@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.startuphub.startup.dto.StartupDto;
 import org.example.startuphub.startup.dto.StartupResponse;
+import org.example.startuphub.startup.dto.UpdateStartupDto;
 import org.example.startuphub.user.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,8 +37,10 @@ public class StartupController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StartupResponse> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(startupService.getById(id));
+    public ResponseEntity<StartupResponse> getById(
+            @PathVariable Long id,
+            @AuthenticationPrincipal User currentUser) {
+        return ResponseEntity.ok(startupService.getById(id, currentUser));
     }
 
     @PostMapping
@@ -52,13 +55,14 @@ public class StartupController {
     @PutMapping("/{id}")
     public ResponseEntity<StartupResponse> update(
             @PathVariable Long id,
-            @Valid @RequestBody StartupDto dto,
+            @RequestBody UpdateStartupDto dto,
             @AuthenticationPrincipal User currentUser
     ) {
         return ResponseEntity.ok(startupService.update(id, dto, currentUser));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('FOUNDER')")
     public ResponseEntity<Void> delete(
             @PathVariable Long id,
             @AuthenticationPrincipal User currentUser

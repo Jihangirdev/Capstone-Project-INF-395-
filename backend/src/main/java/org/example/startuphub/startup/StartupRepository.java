@@ -13,11 +13,12 @@ public interface StartupRepository extends JpaRepository<Startup, Long> {
     List<Startup> findByOwner_Id(Long ownerId);
 
     @Query("""
-        SELECT s FROM Startup s
-        WHERE (:category IS NULL OR s.category = :category)
-          AND (:stage IS NULL OR s.stage = :stage)
-          AND (:search IS NULL OR LOWER(s.title) LIKE LOWER(CONCAT('%', :search, '%')))
-    """)
+    SELECT s FROM Startup s
+    WHERE (:category IS NULL OR s.category = :category)
+      AND (:stage IS NULL OR s.stage = :stage)
+      AND (:search IS NULL OR :search = '' OR LOWER(s.title) LIKE LOWER(CONCAT('%', :search, '%')))
+    ORDER BY s.createdAt DESC
+""")
     Page<Startup> search(
             @Param("category") String category,
             @Param("stage") StartupStage stage,

@@ -20,7 +20,7 @@ public class AuthService {
 
     public AuthResponse register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email уже используется");
+            throw new RuntimeException("Email is already taken");
         }
 
         User user = new User();
@@ -32,18 +32,18 @@ public class AuthService {
         userRepository.save(user);
 
         String token = jwtUtil.generateToken(user.getEmail());
-        return new AuthResponse(token, user.getEmail(), user.getRole().name());
+        return new AuthResponse(user.getId(), token, user.getEmail(), user.getRole().name());
     }
 
     public AuthResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Неверный пароль");
+            throw new RuntimeException("Wrong password");
         }
 
         String token = jwtUtil.generateToken(user.getEmail());
-        return new AuthResponse(token, user.getEmail(), user.getRole().name());
+        return new AuthResponse(user.getId(), token, user.getEmail(), user.getRole().name());
     }
 }
