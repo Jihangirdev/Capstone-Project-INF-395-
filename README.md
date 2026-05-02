@@ -126,8 +126,8 @@ Main API groups used in the project:
 
 ## Developers
 
-* Jetesuly Jihangir
-* Ospanov Miras
+* Jetesuly Jihangir - 230103021
+* Ospan Miras - 230103206
 
 ## Notes
 
