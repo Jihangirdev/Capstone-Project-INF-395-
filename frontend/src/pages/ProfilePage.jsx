@@ -245,7 +245,7 @@ export default function ProfilePage() {
         {activeTab === "startups" && isFounder && (
           <div className="mt-6 space-y-4">
             <div className="flex justify-end">
-              <Link to="/startups/create"
+              <Link to="/create"
                 className="rounded-2xl bg-sky-400 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:scale-[1.01]">
                 + New Startup
               </Link>
