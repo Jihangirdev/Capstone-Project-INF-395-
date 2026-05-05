@@ -21,16 +21,10 @@ export default function App() {
         <Route path="/" element={<WelcomePage />} />
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/startups" element={<StartupsPage />} />
+        <Route path="/create" element={
+            <PrivateRoute><CreateStartupPage /></PrivateRoute>
+          } />
         <Route path="/startups/:id" element={<StartupDetailPage />} />
-
-        <Route
-          path="/create"
-          element={
-            <PrivateRoute>
-              <CreateStartupPage />
-            </PrivateRoute>
-          }
-        />
 
         <Route
           path="/profile"
